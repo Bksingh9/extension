@@ -2,9 +2,9 @@
 """
 AJIO-Style Catalogue Image Generation Pipeline
 ================================================
-Reads product descriptions from CSV/Excel and generates 5 professional
-AJIO-style product images per SKU using DALL-E 3, then builds an offline
-HTML catalogue viewer.
+Reads product descriptions from CSV/Excel and generates 1 professional
+AJIO-style product image per SKU using DALL-E 3 (white BG catalogue shot),
+then builds an offline HTML catalogue viewer.
 
 Usage:
     export OPENAI_API_KEY="your-key-here"
@@ -40,10 +40,6 @@ DALLE_QUALITY = "standard"
 
 IMAGE_TYPES = [
     ("white_bg", "White BG"),
-    ("front", "Front View"),
-    ("detail", "Detail Shot"),
-    ("flat_lay", "Flat Lay"),
-    ("back", "Back View"),
 ]
 
 
@@ -259,11 +255,8 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans
 .wishlist-btn {{ position: absolute; top: 10px; right: 10px; background: #fff; border: 1px solid #eee; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; font-size: 16px; color: #999; }}
 .wishlist-btn:hover {{ color: #d4373c; border-color: #d4373c; }}
 
-/* Thumbnail strip */
-.card-thumbnails {{ display: flex; gap: 4px; padding: 6px 8px; background: #fff; }}
-.card-thumb {{ width: 36px; height: 36px; border: 1px solid #eee; border-radius: 2px; cursor: pointer; overflow: hidden; }}
-.card-thumb img {{ width: 100%; height: 100%; object-fit: cover; }}
-.card-thumb:hover, .card-thumb.active {{ border-color: #535766; }}
+/* Thumbnail strip (hidden — single image mode) */
+.card-thumbnails {{ display: none; }}
 
 /* Card Info */
 .card-info {{ padding: 10px 12px 14px; }}
@@ -284,10 +277,8 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans
 .pdp-images {{ flex: 0 0 55%; padding: 30px; background: #fafafa; }}
 .pdp-main-image {{ width: 100%; aspect-ratio: 1; background: #fff; border-radius: 4px; overflow: hidden; margin-bottom: 12px; }}
 .pdp-main-image img {{ width: 100%; height: 100%; object-fit: contain; }}
-.pdp-thumbs {{ display: flex; gap: 8px; }}
-.pdp-thumb {{ width: 64px; height: 64px; border: 2px solid transparent; border-radius: 4px; cursor: pointer; overflow: hidden; background: #fff; }}
-.pdp-thumb img {{ width: 100%; height: 100%; object-fit: cover; }}
-.pdp-thumb:hover, .pdp-thumb.active {{ border-color: #535766; }}
+/* PDP thumbs hidden — single image mode */
+.pdp-thumbs {{ display: none; }}
 
 /* PDP Info */
 .pdp-info {{ flex: 1; padding: 30px 30px 30px 20px; }}
@@ -408,14 +399,10 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans
 const PRODUCTS = {products_json};
 
 const TYPE_LABELS = {{
-  "white_bg": "White BG",
-  "front": "Front View",
-  "detail": "Detail Shot",
-  "flat_lay": "Flat Lay",
-  "back": "Back View"
+  "white_bg": "White BG"
 }};
 
-const TYPE_ORDER = ["white_bg", "front", "detail", "flat_lay", "back"];
+const TYPE_ORDER = ["white_bg"];
 
 // Placeholder SVG for missing images
 function placeholder(text) {{
